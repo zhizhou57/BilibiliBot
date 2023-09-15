@@ -49,7 +49,9 @@ def fetch_user_followings(user_info: dict, pn: int = 1, order_type: bool = False
         if order_type:
             url += "?order_type=" + "attention"
         if pn > 1:
-            url += "?pn=" + str(pn)
+            url += "&pn=" + str(pn)
+            url += "&ps=50"
+        # print(url)
         response = requests.get(url, headers=headers)
         following = json.loads(response.content)
         data = following.get('data')
@@ -93,13 +95,24 @@ def search_user_by_following(mid: str, username: str)-> dict:
     following_list, total_num = fetch_user_followings(user_info)
     for following in following_list:
         uname = following.get('uname')
+        # print(uname)
         if uname == username:
             mid = following.get('mid')
             usign = following.get('sign')
             return {'uname':uname, 'mid':mid, 'usign':usign}
 
+    for i in range(2, total_num // 50 + 2):
+        following_list, total_num = fetch_user_followings(user_info, pn=i)
+        for following in following_list:
+            uname = following.get('uname')
+            # print(uname)
+            if uname == username:
+                mid = following.get('mid')
+                usign = following.get('sign')
+                return {'uname': uname, 'mid': mid, 'usign': usign}
 
-username = "CircularArc"
+
+username = "zhi舟"
 user_info = search_user(username)
 if not user_info:
     print("未搜索到该用户, 从关注列表查询该用户")
