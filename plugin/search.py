@@ -112,11 +112,11 @@ def search_user_by_following(mid: str, username: str)-> dict:
                 return {'uname': uname, 'mid': mid, 'usign': usign}
 
 
-username = "zhi舟"
+username = "xxxx"
 user_info = search_user(username)
 if not user_info:
     print("未搜索到该用户, 从关注列表查询该用户")
-    mid = "252162735"
+    mid = "xxxx"
     user_info = search_user_by_following(mid, username)
     if not user_info:
         print("仍未搜索到该用户，请检查用户名")
